@@ -1,6 +1,7 @@
 # coding: utf8
 from __future__ import unicode_literals, print_function, division
 from itertools import groupby
+from operator import itemgetter
 
 from six import text_type
 from clldutils.misc import cached_property
@@ -42,14 +43,13 @@ class Wordlist(object):
         for row in rows:
             if not (isinstance(row, (tuple, list)) and len(row) == len(header)):
                 raise ValueError('rows must be lists of same length as the header')
-            self._rows.append(tuple(row))
-        self.header = tuple(header)
+            self._rows.append(list(row))
         self.concept_col = concept
         self.language_col = language
         self.id_col = id_
 
         # Map header names to list index in self.header:
-        self._header2index = {h: i for i, h in enumerate(self.header)}
+        self._header2index = {h: i for i, h in enumerate(header)}
 
         # Map row IDs to list index in self._rows:
         id_index = self._header2index.get(id_, 0)
@@ -79,6 +79,10 @@ class Wordlist(object):
         Iterating over a wordlist means iterating over its rows.
         """
         return iter(self._rows)
+
+    @property
+    def header(self):
+        return [col for col, i in sorted(self._header2index.items(), key=itemgetter(1))]
 
     @cached_property()
     def languages(self):
@@ -190,15 +194,13 @@ class Wordlist(object):
         assert isinstance(col, text_type)
         if col in [self.id_col, self.concept_col, self.language_col]:
             raise ValueError('cannot overwrite values of reserved columns')
-        if col in self.header:
+
+        index = self._header2index.get(col)
+        if index is not None:
             if not override:
                 raise ValueError('to overwrite existing columns, specify `override=True`')
-            index = self.header.index(col)
         else:
-            index = len(self.header)
-            self.header = tuple(list(self.header) + [col])
-        self._header2index = {h: i for i, h in enumerate(self.header)}
+            self._header2index[col] = index = len(self._header2index)
+        header = self.header
         for i, row in enumerate(self):
-            row = list(self._rows[i])
-            row.insert(index, func(dict(zip(self.header, row)), **kw))
-            self._rows[i] = tuple(row)
+            self._rows[i].insert(index, func(dict(zip(header, row)), **kw))

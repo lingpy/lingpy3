@@ -34,3 +34,22 @@ class Tests(TestCase):
         # duplicate row ID:
         with self.assertRaises(ValueError):
             self._make_one(rows=[[1, 2, 3], [1, 2, 3]])
+
+    def test_add_col(self):
+        wl = self._make_one()
+
+        with self.assertRaises(ValueError):
+            wl.add_col('id', lambda x: 'x')
+
+        wl.add_col('xcol', lambda x: 'x')
+        self.assertEqual(wl['1', 'xcol'], 'x')
+        self.assertEqual(wl.header[-1], 'xcol')
+
+        with self.assertRaises(ValueError):
+            wl.add_col('xcol', lambda x: 'x')
+
+        wl.add_col('xcol', lambda x: 'y', override=True)
+        self.assertEqual(wl['1', 'xcol'], 'y')
+
+        wl.add_col('zcol', lambda x: x['xcol'])
+        self.assertEqual(wl['1', 'zcol'], 'y')
