@@ -1,6 +1,6 @@
 # coding: utf8
 from __future__ import unicode_literals, print_function, division
-from itertools import groupby
+from itertools import groupby, chain
 from operator import itemgetter
 
 from six import text_type
@@ -194,14 +194,40 @@ class Wordlist(object):
     def get_dict_by_concept(self, *cols, **query):
         return {k: items for k, items in self.iter_by_concept(*cols, **query)}
 
-    def get_etymdict(self, ref='cogid'):
-        res = {}
+    def iter_etymology(self, ref='cogid', entry=None):
         lmap = {l: i for i, l in enumerate(self.languages)}
-        for cogid, rows in self.iter_grouped(ref, self.id_col, self.language_col):
-            res[cogid] = [[] for _ in self.languages]
-            for id_, lang in rows:
-                res[cogid][lmap[lang]].append(id_)
-        return res
+        for cogid, rows in self.iter_grouped(
+                ref, entry or self.id_col, self.language_col):
+            res = [[] for _ in self.languages]
+            for val, lang in rows:
+                if val not in res[lmap[lang]]:
+                    res[lmap[lang]].append(val)
+            yield cogid, res
+
+    def get_etymdict(self, ref='cogid', entry=None):
+        return {cid: vals for cid, vals in self.iter_etymology(ref=ref, entry=entry)}
+
+    def iter_paps(self, ref='cogid', concept=None, missing=0):
+        concept = concept or self.concept_col
+        missed = {
+            c: [i for i, lang in enumerate(self.languages) if lang not in set(langs)]
+            for c, langs in self.iter_grouped(concept, self.language_col)}
+
+        for key, values in self.iter_etymology(ref=ref, entry=concept):
+            paps = []
+            concepts = set(chain(*values))
+            if len(concepts) == 1:
+                # classic cognacy within the same meaning slot
+                concept = concepts.pop()
+            else:
+                concept = None
+
+            for lang_index, value in enumerate(values):
+                pap = 1
+                if not value and concept:
+                    pap = missing if lang_index in missed[concept] else 0
+                paps.append(pap)
+            yield key, paps
 
     def add_col(self, col, func, override=False, **kw):
         """
