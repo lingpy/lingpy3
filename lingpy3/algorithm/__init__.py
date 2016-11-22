@@ -26,7 +26,7 @@ except ImportError:  # pragma: no cover
 
 try:
     from lingpy3.algorithm.cython import misc as misc
-except IndexError:  # pragma: no cover
+except ImportError:  # pragma: no cover
     from lingpy3.algorithm.cython import _misc as misc
     cmod.add('misc')
 
