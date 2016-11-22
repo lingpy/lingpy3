@@ -35,6 +35,10 @@ class Tests(TestCase):
         with self.assertRaises(ValueError):
             self._make_one(rows=[[1, 2, 3], [1, 2, 3]])
 
+    def test_get_etymdict(self):
+        wl = self._make_one()
+        self.assertEqual(wl.get_etymdict(ref='concept'), {'c1': [['1']]})
+
     def test_add_col(self):
         wl = self._make_one()
 
@@ -53,3 +57,5 @@ class Tests(TestCase):
 
         wl.add_col('zcol', lambda x: x['xcol'])
         self.assertEqual(wl['1', 'zcol'], 'y')
+        wl['1', 'xcol'] = 'z'
+        self.assertEqual(wl['1', 'xcol'], 'z')

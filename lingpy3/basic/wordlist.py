@@ -74,6 +74,9 @@ class Wordlist(object):
         _map = {'concept': self.concept_col, 'language': self.language_col}
         return col - 1 if isinstance(col, int) else self._header2index[_map.get(col, col)]
 
+    def __len__(self):
+        return len(self._rows)
+
     def __iter__(self):
         """
         Iterating over a wordlist means iterating over its rows.
@@ -103,6 +106,14 @@ class Wordlist(object):
             assert len(item) == 2
             return self._rows[self._row_index(item[0])][self._col_index(item[1])]
         return self._rows[self._row_index(item)]
+
+    def __setitem__(self, item, value):
+        """
+        Modify a specific cell in a specific column of a wordlist.
+        """
+        if not (isinstance(item, tuple) and len(item) == 2):
+            raise ValueError('invalid wordlist __setitem__ index')
+        self._rows[self._row_index(item[0])][self._col_index(item[1])] = value
 
     def iter_slices(self, cols, rows=None):
         """
@@ -182,6 +193,15 @@ class Wordlist(object):
 
     def get_dict_by_concept(self, *cols, **query):
         return {k: items for k, items in self.iter_by_concept(*cols, **query)}
+
+    def get_etymdict(self, ref='cogid'):
+        res = {}
+        lmap = {l: i for i, l in enumerate(self.languages)}
+        for cogid, rows in self.iter_grouped(ref, self.id_col, self.language_col):
+            res[cogid] = [[] for _ in self.languages]
+            for id_, lang in rows:
+                res[cogid][lmap[lang]].append(id_)
+        return res
 
     def add_col(self, col, func, override=False, **kw):
         """
