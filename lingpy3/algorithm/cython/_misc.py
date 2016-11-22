@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 # [autouncomment] cdef extern from "math.h": 
-from numpy import sqrt
+from math import sqrt
 # [autouncomment]     double sqrt( double x)
 
 def transpose(
@@ -81,7 +81,7 @@ class ScoreDict(object):
     Examples
     --------
     Initialize a ScoreDict object::
-        >>> from lingpy.algorith.cython.misc import ScoreDict
+        >>> from lingpy3.algorith.cython.misc import ScoreDict
         >>> scorer = ScoreDict(['a', 'b'], [1, -1, -1, 1])
         
     Retrieve scores::

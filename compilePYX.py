@@ -27,7 +27,7 @@ def pyx2py(infile, outfile, debug=False):
         old_line = line
         if 'cdef extern from' in line:
             line = '# [autouncomment] ' + line
-            line += 'from numpy import sqrt\n'
+            line += 'from math import sqrt\n'
         elif 'double sqrt( double x)' in line:
             line = '# [autouncomment] ' + line
         elif '=' not in line:
