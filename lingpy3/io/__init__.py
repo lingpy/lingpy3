@@ -2,7 +2,7 @@
 """
 LingPy3 input and output functionality
 
-Input means creating lingpy3 objects from user input such as text of files. Generally,
+Input means creating lingpy3 objects from user input such as text or files. Generally,
 this is realized through readers (adapters in ZCA lingo), adapting the type of user input
 to the desired lingpy3 interface.
 

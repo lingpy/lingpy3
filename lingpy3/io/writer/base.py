@@ -24,5 +24,5 @@ class Txt(BaseWriter):
     name = 'txt'
     adapts(IWordlist, ISoundClassModel)
 
-    def content(self, **kw):
+    def get(self, **kw):
         return '%s' % self.obj
