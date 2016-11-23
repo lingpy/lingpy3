@@ -8,6 +8,7 @@ from tempfile import NamedTemporaryFile
 import warnings
 
 from six import text_type
+from clldutils.path import as_unicode
 
 from lingpy3.config import Config
 
@@ -108,7 +109,7 @@ def error(msg, **kw):
 
 def file_written(fname, logger=None):
     logger = logger or get_logger()
-    logger.info("Data has been written to file <{0}>.".format(fname))
+    logger.info("File created at <{0}>.".format(as_unicode(fname)))
 
 
 def deprecated(old, new):

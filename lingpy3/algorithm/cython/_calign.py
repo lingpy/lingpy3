@@ -165,7 +165,7 @@ def globalign(
             almB += [seqB[i-1]]
             i -= 1
             j -= 1
-        else:
+        else:  # pragma: no cover
             almA += [seqA[j-1]]
             almB += ['-']
             j -= 1
@@ -353,7 +353,7 @@ def secondary_globalign(
             almB += [seqB[i-1]]
             i -= 1
             j -= 1
-        else:
+        else:  # pragma: no cover
             almA += [seqA[j-1]]
             almB += ['-']
             j -= 1
