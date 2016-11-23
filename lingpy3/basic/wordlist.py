@@ -3,10 +3,12 @@ from __future__ import unicode_literals, print_function, division
 from itertools import groupby, chain
 from operator import itemgetter
 
+from zope.interface import implementer
 from six import text_type
 from clldutils.misc import cached_property
 
 from lingpy3.util import uniq
+from lingpy3.interfaces import IWordlist
 
 
 def split(value):
@@ -17,6 +19,7 @@ def join(values):
     return ' '.join(values)
 
 
+@implementer(IWordlist)
 class Wordlist(object):
     def __init__(self, header, rows, id_='id', concept='concept', language='doculect'):
         """

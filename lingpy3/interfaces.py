@@ -3,6 +3,41 @@ from __future__ import unicode_literals, print_function, division
 from zope.interface import Interface, Attribute
 
 
+class IPath(Interface):
+    """"""
+
+
+class IText(Interface):
+    """"""
+
+
+class IWordlist(Interface):
+    """
+
+    """
+    concept_col = Attribute("""""")
+    language_col = Attribute("""""")
+    id_col = Attribute("""""")
+    header = Attribute("""""")
+    languages = Attribute("""""")
+    concepts = Attribute("""""")
+
+    def __len__(self):
+        """"""
+
+    def __iter__(self):
+        """"""
+
+
+class IWriter(Interface):
+    """"""
+    def get(self, **kw):
+        """"""
+
+    def write(self, path, **kw):
+        """"""
+
+
 class ISoundClassModel(Interface):
     """
     Interface for sound-class models.

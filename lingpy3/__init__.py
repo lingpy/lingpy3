@@ -4,6 +4,8 @@ from __future__ import unicode_literals, print_function, division
 from lingpy3 import registry
 from lingpy3.sequence.soundclassmodel import SoundClassModel, DiacriticsVowelsTones
 from lingpy3 import settings
+from lingpy3 import interfaces
+from lingpy3 import io
 
 __version__ = "1.0"
 PROG = 'LingPy3-{0}'.format(__version__)

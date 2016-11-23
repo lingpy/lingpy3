@@ -2421,7 +2421,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_globalign(CYTHON_U
  *             almB += [seqB[i-1]]
  *             i -= 1             # <<<<<<<<<<<<<<
  *             j -= 1
- *         else:
+ *         else:  # pragma: no cover
  */
       __pyx_v_i = (__pyx_v_i - 1);
 
@@ -2429,7 +2429,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_globalign(CYTHON_U
  *             almB += [seqB[i-1]]
  *             i -= 1
  *             j -= 1             # <<<<<<<<<<<<<<
- *         else:
+ *         else:  # pragma: no cover
  *             almA += [seqA[j-1]]
  */
       __pyx_v_j = (__pyx_v_j - 1);
@@ -2446,7 +2446,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_globalign(CYTHON_U
 
     /* "lingpy3/algorithm/cython/calign.pyx":168
  *             j -= 1
- *         else:
+ *         else:  # pragma: no cover
  *             almA += [seqA[j-1]]             # <<<<<<<<<<<<<<
  *             almB += ['-']
  *             j -= 1
@@ -2471,7 +2471,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_globalign(CYTHON_U
       __pyx_t_7 = 0;
 
       /* "lingpy3/algorithm/cython/calign.pyx":169
- *         else:
+ *         else:  # pragma: no cover
  *             almA += [seqA[j-1]]
  *             almB += ['-']             # <<<<<<<<<<<<<<
  *             j -= 1
@@ -3949,7 +3949,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_2secondary_globali
  *             almB += [seqB[i-1]]
  *             i -= 1             # <<<<<<<<<<<<<<
  *             j -= 1
- *         else:
+ *         else:  # pragma: no cover
  */
       __pyx_v_i = (__pyx_v_i - 1);
 
@@ -3957,7 +3957,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_2secondary_globali
  *             almB += [seqB[i-1]]
  *             i -= 1
  *             j -= 1             # <<<<<<<<<<<<<<
- *         else:
+ *         else:  # pragma: no cover
  *             almA += [seqA[j-1]]
  */
       __pyx_v_j = (__pyx_v_j - 1);
@@ -3974,7 +3974,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_2secondary_globali
 
     /* "lingpy3/algorithm/cython/calign.pyx":356
  *             j -= 1
- *         else:
+ *         else:  # pragma: no cover
  *             almA += [seqA[j-1]]             # <<<<<<<<<<<<<<
  *             almB += ['-']
  *             j -= 1
@@ -3999,7 +3999,7 @@ static PyObject *__pyx_pf_7lingpy3_9algorithm_6cython_6calign_2secondary_globali
       __pyx_t_7 = 0;
 
       /* "lingpy3/algorithm/cython/calign.pyx":357
- *         else:
+ *         else:  # pragma: no cover
  *             almA += [seqA[j-1]]
  *             almB += ['-']             # <<<<<<<<<<<<<<
  *             j -= 1

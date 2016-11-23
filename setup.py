@@ -31,6 +31,7 @@ requires = [
     'clldutils>=1.5.1',
     'tqdm',
     'zope.interface>=4.3',
+    'zope.component>=4.3',
 ]
 
 
