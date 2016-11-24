@@ -51,6 +51,10 @@ class Wordlist(object):
         self.language_col = language
         self.id_col = id_
 
+        # Since we cache the values of some columns, these values may not be changed
+        # during the life of the Wordlist.
+        self.reserved_cols = [self.id_col, self.language_col, self.concept_col]
+
         # Map header names to list index in self.header:
         self._header2index = {h: i for i, h in enumerate(header)}
 
@@ -116,7 +120,10 @@ class Wordlist(object):
         """
         if not (isinstance(item, tuple) and len(item) == 2):
             raise ValueError('invalid wordlist __setitem__ index')
-        self._rows[self._row_index(item[0])][self._col_index(item[1])] = value
+        col_index = self._col_index(item[1])
+        if col_index in [self._col_index(col) for col in self.reserved_cols]:
+            raise ValueError('cannot overwrite values of reserved columns')
+        self._rows[self._row_index(item[0])][col_index] = value
 
     def iter_slices(self, cols, rows=None):
         """
@@ -241,7 +248,7 @@ class Wordlist(object):
         value for the new column for the row.
         """
         assert isinstance(col, text_type)
-        if col in [self.id_col, self.concept_col, self.language_col]:
+        if col in self.reserved_cols:
             raise ValueError('cannot overwrite values of reserved columns')
 
         index = self._header2index.get(col)

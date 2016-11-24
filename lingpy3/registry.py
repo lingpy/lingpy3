@@ -19,11 +19,13 @@ def get_registry():
 
 
 def get_interface(thing):
-    if isinstance(thing, Interface):
-        return thing
-    if inspect.isclass(thing):
-        return list(implementedBy(thing))[0]
-    return list(providedBy(thing))[0]
+    res = list(providedBy(thing))
+    if len(res) == 1:
+        return res[0]
+    res = list(implementedBy(thing))
+    if len(res) == 1:
+        return res[0]
+    return thing
 
 
 def register_adapter(cls, from_=None, to_=None, name=None):

@@ -11,7 +11,7 @@ from clldutils import clilib
 import lingpy3
 
 
-
+# Shortcut to create a progress bar which will disappear after completion:
 pb = partial(tqdm, leave=False)
 
 

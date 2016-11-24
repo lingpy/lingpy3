@@ -2,9 +2,8 @@
 from __future__ import unicode_literals, print_function, division
 
 from zope.interface import implementer
-from zope.component import adapts
 
-from lingpy3.interfaces import IWriter, IWordlist, ISoundClassModel
+from lingpy3.interfaces import IWriter
 
 
 @implementer(IWriter)
@@ -22,7 +21,6 @@ class BaseWriter(object):
 
 class Txt(BaseWriter):
     name = 'txt'
-    adapts(IWordlist, ISoundClassModel)
 
     def get(self, **kw):
         return '%s' % self.obj
