@@ -10,6 +10,9 @@ class Tests(TestCase):
     def test_ScoreTree(self):
         from lingpy3.sequence.scoretree import ScoreTree
 
+        tree = ScoreTree([('A', ['g', 'C:1']), ('C', ['c', 'A:4'])])
+        tree.get_scoredict()
+
         tree = ScoreTree(list(read_items(data_path('models', 'sca', 'scorer'))))
         sd = tree.get_scoredict()
         self.assertEqual(

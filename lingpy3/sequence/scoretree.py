@@ -163,7 +163,7 @@ class ScoreTree(networkx.DiGraph):
                         if 'v' in choices or 'c' in choices:
                             value = self._get_starting_value(node1, node2, 10, -5)
                         else:
-                            raise ValueError
+                            raise ValueError  # pragma: no cover
                     else:
                         value = self._get_starting_value(node1, node2, 15, -10)
 

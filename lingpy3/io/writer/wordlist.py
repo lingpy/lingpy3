@@ -13,7 +13,7 @@ class Csv(BaseWriter):
     adapts(IWordlist)
 
     def get(self, **kw):
-        with UnicodeWriter(f=None, delimiter=kw.get('delimiter')) as writer:
+        with UnicodeWriter(f=None, delimiter=kw.get('delimiter', '\t')) as writer:
             writer.writerow(self.obj.header)
             for row in self.obj:
                 writer.writerow(row)

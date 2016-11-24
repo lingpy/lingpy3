@@ -25,12 +25,19 @@ class Tests(TestCase):
         return Wordlist(
             _header if header is None else header, _rows if rows is None else rows, **kw)
 
+    def test_split_join(self):
+        from lingpy3.basic.wordlist import split, join
+
+        l = list('abc')
+        self.assertEqual(split(join(l)), l)
+
     def test_init(self):
-        self._make_one()
+        wl = self._make_one()
+        self.assertEqual(wl.concepts, ['foot', 'hand, arm', 'knee'])
 
         # invalid data type for header:
         with self.assertRaises(ValueError):
-            self._make_one(header=['id', 'concept', 'doculect', 5])
+            self._make_one(header=['id', 'concept', 'doculect', 5, 6, 7])
 
         # duplicate column names in header:
         with self.assertRaises(ValueError):
@@ -46,7 +53,41 @@ class Tests(TestCase):
 
         # duplicate row ID:
         with self.assertRaises(ValueError):
-            self._make_one(rows=[[1, 2, 3], [1, 2, 3]])
+            self._make_one(rows=[[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]])
+
+    def test_setitem(self):
+        wl = self._make_one()
+        with self.assertRaises(ValueError):
+            wl[1] = []
+
+        with self.assertRaises(ValueError):
+            wl[1, 'id'] = 'x'
+
+    def test_get_slices(self):
+        wl = self._make_one()
+        self.assertEqual(wl.get_slices([]), list(wl))
+        self.assertEqual(wl.get_slices(1)[0], wl[1, 'id'])
+
+    def test_filter(self):
+        wl = self._make_one()
+        self.assertEqual(len(list(wl.filter(language='l1', concept='knee'))), 1)
+
+    def test_get_dict_by_language(self):
+        wl = self._make_one()
+        self.assertEqual(len(wl.get_dict_by_language()), 5)
+
+    def test_get_by_language(self):
+        wl = self._make_one()
+        self.assertEqual(len(wl.get_by_language()), 5)
+        self.assertEqual(len(wl.get_by_language(language='l1')), 1)
+
+    def test_get_dict_by_concept(self):
+        wl = self._make_one()
+        self.assertEqual(len(wl.get_dict_by_concept()), 3)
+
+    def test_get_by_concept(self):
+        wl = self._make_one()
+        self.assertEqual(len(wl.get_by_concept()), 3)
 
     def test_get_etymdict(self):
         wl = self._make_one()

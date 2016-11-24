@@ -4,7 +4,7 @@ from unittest import TestCase
 from lingpy3 import util
 
 
-class TestCombinations(TestCase):
+class Tests(TestCase):
     def test_combinations2(self):
         def f(l):
             for i, a1 in enumerate(l):
@@ -22,8 +22,19 @@ class TestCombinations(TestCase):
             self.assertEqual(list(util.combinations2(l)), list(f(l)))
             self.assertEqual(list(util.multicombinations2(l)), list(fm(l)))
 
+    def test_identity(self):
+        for thing in [None, 'x', 3]:
+            self.assertEqual(util.identity(thing), thing)
 
-class TestJoin(TestCase):
+    def test_setdefaults(self):
+        d = {'a': 1}
+        util.setdefaults(d, a=3, b=1)
+        self.assertEqual(d['a'], 1)
+        self.assertEqual(d['b'], 1)
+
+    def test_charstring(self):
+        self.assertEqual(util.charstring('abc'), 'abc.X.-')
+
     def test_join(self):
         self.assertEqual(util.join('.'), '')
         self.assertEqual(util.join('.', 1), '1')

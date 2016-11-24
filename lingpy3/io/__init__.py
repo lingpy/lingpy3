@@ -27,12 +27,14 @@ from lingpy3.io.writer import base as writebase
 from lingpy3.io.writer import wordlist as writewl
 
 for adapter in [
-    writebase.Txt,
-    writewl.Csv,
-    writewl.PapsNex,
-    readwl.Csv,
+    (writebase.Txt, interfaces.IWordlist),
+    (writebase.Txt, interfaces.ISoundClassModel),
+    (writewl.Csv,),
+    (writewl.PapsNex,),
+    (readwl.Csv,),
+    (readwl.CsvFromText,),
 ]:
-    register_adapter(adapter)
+    register_adapter(*adapter)
 
 
 def read(obj, interface, name, **kw):
