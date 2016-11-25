@@ -1,11 +1,12 @@
 # coding: utf8
 from __future__ import unicode_literals, print_function, division
-from unittest import TestCase
 from collections import defaultdict
 
 from mock import patch
+from clldutils.testing import WithTempDir
 
 from lingpy3.util import data_path
+from lingpy3 import jsonlib
 
 
 MATRIX_DISS = [
@@ -418,7 +419,7 @@ CONVERTER_ASJP = {
 }
 
 
-class Tests(TestCase):
+class Tests(WithTempDir):
     def test_SoundClassModel(self):
         from lingpy3.sequence.soundclassmodel import SoundClassModel
 
@@ -453,3 +454,10 @@ class Tests(TestCase):
 
         with patch('lingpy3.sequence.soundclassmodel.Cache', dict):
             DiacriticsVowelsTones.from_name('dvt')
+
+        dvt = DiacriticsVowelsTones.from_name('dvt')
+        self.assertEqual(
+            dvt,
+            jsonlib.load(
+                jsonlib.dump(dvt, outdir=self.tmp_path()),
+                cls=DiacriticsVowelsTones))

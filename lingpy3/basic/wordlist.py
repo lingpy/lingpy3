@@ -66,6 +66,23 @@ class Wordlist(object):
         if len(self._id2index) != len(self._rows):
             raise ValueError('duplicate row IDs in wordlist')
 
+    def __eq__(self, other):
+        return self.header == other.header and self._rows == other._rows
+
+    def __json__(self):
+        return {
+            'header': self.header,
+            'rows': self._rows,
+            'kwargs': {
+                'id_': self.id_col,
+                'concept': self.concept_col,
+                'language': self.language_col}
+        }
+
+    @classmethod
+    def __from_json__(cls, val):
+        return cls(val['header'], val['rows'], **val['kwargs'])
+
     def _row_index(self, row):
         """
         :param row: int or text_type, specifying 1-based row index or row ID.

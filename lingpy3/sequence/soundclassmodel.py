@@ -39,6 +39,17 @@ class DiacriticsVowelsTones(NamedObject):
         self.vowels = vowels
         self.tones = tones
 
+    def __eq__(self, other):
+        return all(getattr(self, k) == getattr(other, k)
+                   for k in 'diacritics vowels tones'.split())
+
+    def __json__(self):
+        return {k: getattr(self, k) for k in 'name diacritics vowels tones'.split()}
+
+    @classmethod
+    def __from_json__(cls, val):
+        return cls(*[val[k] for k in 'name diacritics vowels tones'.split()])
+
     @classmethod
     def from_path(cls, path):
         cache = Cache()
