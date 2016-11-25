@@ -1,14 +1,15 @@
 # coding: utf8
 from __future__ import unicode_literals, print_function, division
-import inspect
 
-from zope.interface import providedBy, implementedBy, Interface
+from six import binary_type, PY2
+from zope.interface import providedBy, implementedBy
 from zope.interface.registry import Components
 from zope.interface.verify import verifyObject
 from zope.component import adaptedBy
 
 
 _registry = None
+ADAPTER_COUNT = 0
 
 
 def get_registry():
@@ -16,6 +17,18 @@ def get_registry():
     if _registry is None:
         _registry = Components()
     return _registry
+
+
+def register_adapter_from_factory(f, adapts, base, provides=None, clsname='A', **clsdict):
+    global ADAPTER_COUNT
+    ADAPTER_COUNT += 1
+    clsdict.setdefault('__doc__', f.__doc__ or '')
+    clsdict.setdefault('__source__', '%s.%s' % (f.__module__, f.__name__))
+    clsname = '%s_%s' % (clsname, ADAPTER_COUNT)
+    register_adapter(
+        type(binary_type(clsname) if PY2 else clsname, (base,), clsdict),
+        from_=adapts,
+        to_=provides)
 
 
 def get_interface(thing):
@@ -48,6 +61,11 @@ def get_adapter(obj, interface, name=None):
 def get_adapters(obj, interface):
     reg = get_registry()
     return reg.getAdapters((obj,), interface)
+
+
+def format_adapters_doc(adapters):
+    return [(name, a.__doc__ or '', getattr(a, '__source__', None) or a.__module__)
+            for name, a in adapters]
 
 
 def register(obj, interface=None, name=None, verify=True):

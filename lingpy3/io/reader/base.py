@@ -60,3 +60,26 @@ class BaseReader(object):
         When called, a Reader must return an initialized object providing the interface.
         """
         raise NotImplemented()  # pragma: no cover
+
+
+def reader(adapts, provides, name=None):
+    """
+    Decorator for simplified implementation and registration of readers.
+
+    :param provides: The interface to which an input object is adapter.
+    :param name: The name under which to register the IWriter - defaults to the name of \
+    the decorated function (with "_" replaced by ".").
+    :return: The (unchanged) decorated function.
+    """
+    def wrap(f):
+        from lingpy3.registry import register_adapter_from_factory
+        register_adapter_from_factory(
+            f,
+            adapts,
+            BaseReader,
+            provides=provides,
+            clsname='Writer_{0}_{1}'.format(provides.__name__, name or f.__name__),
+            __call__=lambda self, **kw: f(self.obj, **kw),
+            name=name or f.__name__.replace('_', '.'))
+        return f
+    return wrap

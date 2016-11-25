@@ -78,6 +78,16 @@ def multicombinations2(iterable):
 product2 = partial(itertools.product, repeat=2)
 
 
+def chained_values(d):
+    """
+    Concatenate the values of a `list`-valued `dict`.
+
+    :param d:
+    :return: `list`
+    """
+    return list(itertools.chain(*d.values()))
+
+
 def join(sep, *args, **kw):
     """
     Convenience shortcut. Strings to be joined do not have to be passed as list or tuple.

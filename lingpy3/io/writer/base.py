@@ -3,7 +3,7 @@ from __future__ import unicode_literals, print_function, division
 
 from zope.interface import implementer
 
-from lingpy3.interfaces import IWriter
+from lingpy3.interfaces import IWriter, IWordlist, ISoundClassModel
 
 
 @implementer(IWriter)
@@ -19,8 +19,29 @@ class BaseWriter(object):
             fp.write(self.get(**kw))
 
 
-class Txt(BaseWriter):
-    name = 'txt'
+def writer(adapts, name=None):
+    """
+    Decorator for simplified implementation and registration of IWriters.
 
-    def get(self, **kw):
-        return '%s' % self.obj
+    :param adapts: The interface which is adapted to IWriter.
+    :param name: The name under which to register the IWriter - defaults to the name of \
+    the decorated function (with "_" replaced by ".").
+    :return: The (unchanged) decorated function.
+    """
+    def wrap(f):
+        from lingpy3.registry import register_adapter_from_factory
+        register_adapter_from_factory(
+            f,
+            adapts,
+            BaseWriter,
+            clsname='Writer_{0}_{1}'.format(adapts.__name__, name or f.__name__),
+            get=lambda self, **kw: f(self.obj, **kw),
+            name=name or f.__name__.replace('_', '.'))
+        return f
+    return wrap
+
+
+@writer(IWordlist)
+@writer(ISoundClassModel)
+def txt(obj, **kw):
+    return '%s' % obj

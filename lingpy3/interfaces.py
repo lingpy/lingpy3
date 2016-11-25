@@ -11,6 +11,12 @@ class IText(Interface):
     """"""
 
 
+class IOperation(Interface):
+    """"""
+    def __call__(self, **kw):
+        """"""
+
+
 class IWordlist(Interface):
     """
 
