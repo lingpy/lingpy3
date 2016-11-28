@@ -45,7 +45,7 @@ setup(
     author="Johann-Mattis List and Robert Forkel",
     author_email="info@lingpy.org",
     entry_points={
-        'console_scripts': ['lingpy=lingpy.cli:main'],
+        'console_scripts': ['lingpy3=lingpy3.cli:main'],
     },
     keywords=[
         "historical linguistics",

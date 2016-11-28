@@ -10,7 +10,7 @@ from lingpy3.io.reader.base import reader
 
 
 def _read_csv(obj, **kw):
-    rows = list(dsv.reader(obj, delimiter=kw.pop('delimiter', None)))
+    rows = list(dsv.reader(obj, delimiter=kw.pop('delimiter', '\t')))
     return Wordlist(rows[0], rows[1:], **kw)
 
 
